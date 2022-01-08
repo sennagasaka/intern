@@ -1,0 +1,80 @@
+.header{
+    position: fixed;
+}
+.talk-room-container{
+    width: 80%;
+    margin: auto;
+}
+.talk-room{
+    list-style: none;
+    padding-left: 0%;
+    margin: 0;
+}
+.redirect-to-friends{
+    text-decoration: none;
+    color: rgb(160, 160, 160);
+    position: fixed;
+    font-size: 2rem;
+    left: 0.5%;
+    top: 0.5%;
+
+}
+.talk-room-reload{
+    text-decoration: none;
+    color: rgb(160, 160, 160);
+    border: solid 2px rgb(160, 160, 160);
+    background-color: #ececec;
+    border-radius: 30px;
+    padding: 3px;
+    position: fixed;
+    right: 0.5%;
+    top: 0.5%;
+}
+.talk-from-user{
+    width: 30%;
+    margin-left: 50%;
+    border: solid 1px black;
+    border-radius: 30px;
+    padding: 0.5rem;
+    float: right;
+    margin-top: 1rem;
+}
+.talk-from-friend{
+    width: 30%;
+    margin-right: 50%;
+    border: solid 1px black;
+    border-radius: 30px;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    float: left;
+}
+.each-talk:last-child{
+    margin-bottom: 4.5rem;
+}
+.each-talk:first-child{
+    margin-top: 5.2rem;
+}
+.talk-room-form{
+    padding-top: 1.2rem;
+    height: 2.5rem;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    background-color: #ececec;
+}
+.text{
+    border-bottom: solid 0.5px black;
+
+}
+input{
+    height: 1.2rem;
+    width: 60%;
+    border: solid 2px black;
+    border-radius: 30px;
+}
+.talk-room-submit-button{
+    border: solid 2px black;
+    border-radius: 30px;
+    background-color: #fff;
+}

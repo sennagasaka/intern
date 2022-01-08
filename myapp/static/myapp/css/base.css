@@ -10,6 +10,7 @@ body{
 .header{
     width: 100vw;
     height: 64px;
+    background-color: #ececec;
     border-bottom: solid 1px #9b9b9b;
 }
 .header-container{
@@ -46,6 +47,7 @@ body{
     height: 64px;
     text-align: center;
     border-top: solid 1px #9b9b9b;
+    background-color: #ececec;
 }
 .footer-container__item{
     display: flex;

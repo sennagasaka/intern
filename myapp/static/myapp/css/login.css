@@ -1,0 +1,15 @@
+.form-container{
+    margin: auto;
+    width: 80%;
+}
+.form{
+    margin-top: 50px;
+    line-height: 3;
+    font-size: 18px;
+}
+.submit-button{
+    border: solid 1px #000;
+    color: #000;
+    background-color: #fff;
+    border-radius: 2px;
+}

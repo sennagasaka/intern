@@ -1,1 +1,17 @@
-S
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'myapp/css/setting.css' %}">
+{% endblock %}
+
+{% block header-title %}Setting{% endblock %}
+
+{% block content %}
+<div class='setting-container'>
+    <a href="{% url 'username_change' %}"><p class="name_change">Change your username</p></a>
+    <a href="{% url 'email_change' %}"><p class="email_change">Change your email address</p></a>
+    <a href="{% url 'image_change' %}"><p class="image_change">Change your icon-image</p></a>
+    <a href="{% url 'password_change' %}"><p class="password_change">Change your password</p></a>
+</div>
+{% endblock %}

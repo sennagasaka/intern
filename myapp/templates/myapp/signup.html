@@ -1,1 +1,26 @@
-SU
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'myapp/css/signup.css' %}">
+{% endblock %}
+
+{% block header-title %}Sign up{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form method="POST" action="{% url 'signup_view' %}" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        <table>
+            <tr><th>Username:</th><td>{{ form.username }}</td><td>{{ form.username.errors }}</td></tr>
+            <tr><th>Email address:</th><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
+            <tr><th>Icon-image:</th><td>{{ form.image}}</td><td>{{ form.image.errors }}</td></tr>
+            <tr><th>Password:</th><td>{{ form.password1}}</td><td>{{ form.password1.errors }}</td></tr>
+            <tr><th>Password confirmation:</th><td>{{ form.password2}}</td><td>{{ form.password2.errors }}</td></tr>
+            <tr><th></th><td><button type="submit" class="submit-button">Sign up</button></td></tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

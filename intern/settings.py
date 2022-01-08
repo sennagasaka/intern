@@ -117,5 +117,21 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
+
+
+AUTH_USER_MODEL = 'myapp.user'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/friends'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+# ...
+try:
+    from .local_settings import *
+except ImportError:
+    # local_settings.py が存在しなくてもエラーにならないようにする
+    pass

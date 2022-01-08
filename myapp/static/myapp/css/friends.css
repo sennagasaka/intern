@@ -1,0 +1,26 @@
+
+.friend-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.friend-list-item{
+    padding: 8px 16px;
+    border-bottom: solid 1px #000;
+    display: flex;
+}
+.friend-list-link{
+    text-decoration: none;
+    color: #000;
+}
+.friend-list-image{
+    height: 40px;
+    width: 40px;
+    border: solid 2px #000;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: -1;
+}
+.friend-list-username{
+    padding-left: 15px;
+}

@@ -1,1 +1,39 @@
-TR
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'myapp/css/talk_room.css' %}">
+{% endblock %}
+
+{% block header-title %}{{ friend.username }}{% endblock %}
+{% block redirect-to-friends %}
+<a href="{% url 'friends' %}" class="redirect-to-friends">&lt;&lt;</a>
+{% endblock %}
+{% block talk-room-reload %}
+<a href="" class="talk-room-reload">Reload</a>
+{% endblock %}
+
+{% block content %}
+<div class="talk-room-container">
+    <ul id="talk-room" class="talk-room">
+        {% for talk in talk %}
+        <li class="talk-from-{% if talk.talk_from == user %}user{% else %}friend{% endif %} each-talk">
+            <p class="name">From:{{ talk.talk_from }}</p>
+            <p class="text">{{ talk.talk }}</p>
+            <p class="time">{{ talk.time }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<form class="talk-room-form" method="POST">
+    {% csrf_token %}
+    {{ form.talk }}
+    <button class="talk-room-submit-button" type="submit">送信</button>
+</form>
+
+{% endblock %}
+
+{% block text %}
+{% endblock %}
+
+{% block footer %}{% endblock %}

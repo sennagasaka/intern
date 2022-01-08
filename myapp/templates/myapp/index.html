@@ -1,1 +1,18 @@
-I
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'myapp/css/index.css' %}">
+{% endblock %}
+
+{% block header %}{% endblock %} 
+
+{% block content %}
+<body>
+    <div class="container">
+        <a href="{% url 'login_view' %}" class="button">Login</a>
+        <a href="{% url 'signup_view' %}" class="button">Sign up</a>
+    </div>
+</body>
+{% endblock %}
+{% block footer %}{% endblock %}

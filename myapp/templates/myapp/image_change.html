@@ -1,0 +1,22 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'myapp/css/image_change.css' %}">
+{% endblock %}
+
+{% block header-title %}Change your icon-image{% endblock %}
+
+{% block content %}
+    <form  method="post" action="{% url 'image_change' %}" class="image-change-form">
+        {{ form.non_field_errors }}
+        {% for field in form %}
+        <div class="form-contents">
+            <label for="{{ field.id_for_label }}" id="labels">{{ field.label_tag }}</label>
+            {{ field }}
+            {{ field.errors }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="submit-button">Change</button>
+    </form>
+{% endblock %}

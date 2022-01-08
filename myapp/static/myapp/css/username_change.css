@@ -1,0 +1,28 @@
+.form-container{
+    width: 80%;
+    margin: auto;
+    font-size: 18px;
+}
+.username-change-form{
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+}
+p{
+    margin: 1rem 0.5rem 1rem 1rem;
+    width: 10%;
+    text-align: center;
+}
+input{
+    margin: 1rem 1rem 1rem 0.5rem;
+    width: 15%;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+button{
+    margin: 1rem;
+    width: 5%;
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 5px;
+}

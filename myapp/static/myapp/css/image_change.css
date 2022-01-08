@@ -1,0 +1,15 @@
+
+.image-change-form{
+    width: 80%;
+    margin: auto;
+    padding-top: 3rem;
+    line-height: 3rem;
+}
+button{
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+label{
+    display: none;
+}
