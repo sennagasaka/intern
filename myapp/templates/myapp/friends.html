@@ -9,6 +9,11 @@
 
 {% block content %}
 <div list-container>
+    <form method="POST" action="{% url 'friends' %}">
+        {% csrf_token %}
+        {{ form.find }}
+        <button type="submit">Search</button>
+    </form>
     <ul class=friend-list>
         {% for friend in friends %}
         <a class="friend-list-link" href="{% url 'talk_room' friend.id %}">

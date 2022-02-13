@@ -1,4 +1,6 @@
-
+form{
+    border-bottom: solid 1px #000;
+}
 .friend-list{
     list-style: none;
     padding: 0;

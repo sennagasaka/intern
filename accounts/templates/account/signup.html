@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="form-container">
-    <form method="POST" action="{% url 'signup_view' %}" enctype="multipart/form-data" class="form">
+    <form method="POST" action="{% url 'account_signup' %}" enctype="multipart/form-data" class="form">
         {% csrf_token %}
         <table>
             <tr><th>Username:</th><td>{{ form.username }}</td><td>{{ form.username.errors }}</td></tr>

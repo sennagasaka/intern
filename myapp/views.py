@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import login, authenticate, get_user_model
-from django.views.generic import CreateView
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
-from .forms import LoginForm, SignUpForm, TalkForm,UsernameChangeForm, EmailChangeForm, PasswordChangeForm, ImageChangeForm
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.template import context
+from django.views import View
+from django.views.generic import TemplateView, ListView
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
+from .forms import TalkForm,UsernameChangeForm, EmailChangeForm, PasswordChangeForm, ImageChangeForm, FindForm
 from django.db.models import Q
 from .models import Talk
 from django.urls import reverse_lazy
@@ -11,117 +14,163 @@ from django.urls import reverse_lazy
 
 User = get_user_model()
 
-def index(request):
-    return render(request, "myapp/index.html")
 
-class SignUp(CreateView):
-    def post(self, request, *args, **kwargs):
-        form=SignUpForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            username=form.cleaned_data.get('username')
-            password=form.cleaned_data.get('password1')
-            user=authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('/')
-        return render(request, 'myapp/signup.html', {'form':form})
+
+class IndexView(TemplateView):
+    template_name='myapp/index.html'
+
+
+
+class FriendsView(LoginRequiredMixin,ListView):
+    model=User
+    template_name="myapp/friends.html"
 
     def get(self, request, *args, **kwargs):
-        form=SignUpForm(request.POST)
-        return render(request, 'myapp/signup.html', {'form':form})
+        user=request.user
+        form=FindForm()
+        friends = User.objects.exclude(id=user.id)
+        context={
+            'form':form,
+            "friends":friends,
+        }
+        return render(request, "myapp/friends.html", context)
 
-signup=SignUp.as_view()
+    def post(self, request, *args, **kwargs):
+        user=request.user
+        form=FindForm(request.POST)
+        str=request.POST['find']
+        friends=User.objects.exclude(id=user.id).filter(username__contains=str)
+        context={
+            'form':form,
+            "friends":friends,
+        }
+        return render(request, "myapp/friends.html", context)
 
-class Login(LoginView):
-    authentication_form=LoginForm
-    template_name='myapp/login.html'
 
-def friends(request):
-    user=request.user
-    friends=User.objects.exclude(id=user.id)
-    return render(request,"myapp/friends.html", {"friends":friends})
+class TalkRoomView(LoginRequiredMixin,ListView):
+    model=Talk
+    template_name="myapp/talk_room.html"
 
-
-def talk_room(request,user_id):
-    user=request.user
-    friend=get_object_or_404(User,id=user_id)
-    talk=Talk.objects.filter(Q(talk_from=user,talk_to=friend)|Q(talk_to=user,talk_from=friend)).order_by("time")
-    form=TalkForm()
-    context={
-        "friend":friend,
-        "form":form,
-        "talk":talk
-    }
-    if request.method=="POST":
-        new_talk=Talk(talk_from=user,talk_to=friend)
-        form=TalkForm(request.POST,instance=new_talk)
+    def get(self, request, user_id):
+        user=request.user
+        friend=get_object_or_404(User,id=user_id)
+        talk=Talk.objects.filter(Q(talk_from=user,talk_to=friend)|Q(talk_to=user,talk_from=friend)).order_by("time")
+        form=TalkForm()
+        context={
+            "friend":friend,
+            "form":form,
+            "talk":talk
+        }
+        return render(request, "myapp/talk_room.html", context)
+    
+    def post(self, request, user_id):
+        user=request.user
+        friend=get_object_or_404(User,id=user_id)
+        talk=Talk(talk_from=user,talk_to=friend)
+        form=TalkForm(request.POST,instance=talk)
+        context={
+            "friend":friend,
+            "form":form,
+            "talk":talk
+        }   
         if form.is_valid():
             form.save()
             return redirect("talk_room", user_id)
-    return render(request, "myapp/talk_room.html", context)
+        return render(request, "myapp/talk_room.html", context)
 
-def setting(request):
-    return render(request, "myapp/setting.html")
 
-def username_change(request):
-    user=request.user
-    form=UsernameChangeForm(instance=user)
-    if request.method=="POST":
+
+class SettingView(LoginRequiredMixin, TemplateView):
+    template_name="myapp/setting.html"
+
+
+
+class UserNameChangeView(LoginRequiredMixin,View):
+    template_name="myapp/username_change.html"
+
+    def get(self, request,  *args, **kwargs):
+        user=request.user
+        form=UsernameChangeForm(instance=user)
+        context={
+            "form":form,
+        }
+        return render(request, "myapp/username_change.html", context)
+
+    def post(self, request,  *args, **kwargs):
+        user=request.user
         form=UsernameChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect("username_change_done")
-    context={
-        "form":form,
-    }
-    return render(request, "myapp/username_change.html", context)
-
-def username_change_done(request):
-    return render(request, "myapp/username_change_done.html")
+        return render(request, "myapp/username_change.html", context)
 
 
-def email_change(request):
-    user=request.user
-    form=EmailChangeForm(instance=user)
-    if request.method=="POST":
+
+class UsernameChangeDoneView(LoginRequiredMixin, TemplateView):
+    template_name="myapp/username_change_done.html"
+    
+
+
+class EmailChangeView(LoginRequiredMixin,View):
+    template_name="myapp/email_change.html"
+
+    def get(self, request,  *args, **kwargs):
+        user=request.user
+        form=EmailChangeForm(instance=user)
+        context={
+            "form":form,
+        }
+        return render(request, "myapp/email_change.html", context)
+
+    def post(self, request,  *args, **kwargs):
+        user=request.user
         form=EmailChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect("setting")
-    context={
-        "form": form,
-    }
-    return render(request, "myapp/email_change.html", context)
-
-def email_change_done(request):
-    return render(request, "myapp/email_change_done.html")
+            return redirect("email_change_done")
+        context={
+            "form":form,
+        }
+        return render(request, "myapp/email_change.html", context)   
 
 
-def image_change(request):
-    user=request.user
-    form=ImageChangeForm(instance=user)
-    if request.method=="POST":
+
+class EmailChangeDoneView(LoginRequiredMixin, TemplateView):
+    template_name="myapp/email_change_done.html"
+
+
+
+class ImageChangeView(LoginRequiredMixin,View):
+    template_name="myapp/image_change.html"
+
+    def get(self, request,  *args, **kwargs):
+        user=request.user
+        form=ImageChangeForm(instance=user)
+        context={
+            "form":form,
+        }
+        return render(request, "myapp/image_change.html", context)
+
+    def post(self, request,  *args, **kwargs):
+        user=request.user
         form=ImageChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect("setting")
-    context = {
-        "form": form,
-    }
-    return render(request, "myapp/image_change.html", context)
+            return redirect("image_change_done")
+        context={
+            "form":form,
+        }
+        return render(request, "myapp/image_change.html", context)   
 
-def image_change_done(request):
-    return render(request, "myapp/image_change_done.html")
+class ImageChangeDoneView(LoginRequiredMixin, TemplateView):
+    template_name="myapp/image_change_done.html"
 
-
-class PasswordChange(PasswordChangeView):
+class PasswordChange(LoginRequiredMixin,PasswordChangeView):
     form_class=PasswordChangeForm
     success_url=reverse_lazy('password_change_done')
     template_name='myapp/password_change.html'
 
-class PasswordChangeDone(PasswordChangeDoneView):
+class PasswordChangeDone(LoginRequiredMixin, PasswordChangeDoneView):
     template_name='myapp/password_change_done.html'
 
 
-class Logout(LogoutView):
-    template_name='logout.html'
