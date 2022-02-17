@@ -1,8 +1,31 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm,PasswordChangeForm
-from django.contrib.auth.models import User
-from .models import Talk
+from allauth.account.forms import (
+    SignupForm,
+    LoginForm,
+    ChangePasswordForm,
+)
+from .models import User,Talk
+
+class SignupForm(SignupForm):
+    img = forms.ImageField(required=False)
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2', 'img')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = "form-control"
+            field.widget.attrs['placeholder'] = field.label
+
+class LoginForm(LoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = "form-control"
+            field.widget.attrs['placeholder'] = field.label
+
+
 
 class TalkForm(forms.ModelForm):
     class Meta:
@@ -41,7 +64,7 @@ class ImageChangeForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 
-class PasswordChangeForm(PasswordChangeForm):
+class PasswordChangeForm(ChangePasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():

@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'intern.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_intern_sennagasaka',
-        'USER': 'postgres',
-        'PASSWORD': '20020307Sen',
+        'NAME': 'django_project',
+        'USER': 'admin',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -136,8 +136,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
 
 
-AUTH_USER_MODEL = 'myapp.user'
-
+AUTH_USER_MODEL = 'myapp.user' #
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
@@ -154,7 +153,7 @@ AUTHENTICATION_BACKENDS=[
 SITE_ID=1
 
 LOGIN_REDIRECT_URL = '/friends'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_USERNAME_REQUIRED=True
 ACCOUNT_EMAIL_VERIFICATION='none'
@@ -162,7 +161,8 @@ ACCOUNT_AUTHENTICATION_METHOD='username'
 ACCOUNT_LOGOUT_ON_GET=True
 
 ACCOUNT_FORMS = {
-    'signup': 'myapp.forms.SignUpForm',
+    'signup': 'myapp.forms.SignupForm',
+    'login': 'myapp.forms.LoginForm',
     'change_password': 'myapp.forms.PasswordChangeForm',
 }
 
